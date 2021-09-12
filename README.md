@@ -131,3 +131,49 @@ function clearTasks() {
 }
 ```
 
+## Filter Tasks
+
+* 1st we add keyup listener 
+
+```js
+function loadEventListeners() {
+  // Add task event
+  form.addEventListener("submit", addTask)
+  // Remove task
+  taskList.addEventListener("click", removeTask)
+  // Remove all tasks
+  clearBtn.addEventListener("click", clearTasks)
+  // filter tasks
+  filter.addEventListener("keyup", filterTasks)
+}
+```
+
+Then create the function:
+
+We pass in event param as we'll need the value being typed.
+
+```js
+function filterTasks(e) {
+  const text = e.target.value.toLowerCase()
+}
+```
+
+querySelectorAll returns a node list so we can use .forEach()
+
+collection-item is a class we are adding to li's for materialize. 
+
+```js
+function filterTasks(e) {
+  const text = e.target.value.toLowerCase()
+
+  document.querySelectorAll(".collection-item").forEach(function (task) {
+    const item = task.firstChild.textContent
+    // indexOf Returns the position of the first occurrence of a substring
+    if (item.toLowerCase().indexOf(text) != -1) {
+      task.style.display = "block"
+    } else {
+      task.style.display = "none"
+    }
+  })
+}
+```
