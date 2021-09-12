@@ -44,3 +44,55 @@ function addTask(e) {
 ### Steps for deleting tasks
 
 * we'll use event delegation and add the listener to the ul that holds the list items
+
+First we add the listener to the ul 
+
+```js
+// Load all event listeners
+loadEventListeners()
+
+function loadEventListeners() {
+  // Add task event
+  form.addEventListener("submit", addTask)
+  // Remove task
+  taskList.addEventListener("click", removeTask)
+}
+```
+
+Then we create a function to remove task.  We need to target the a tag which is the parent of the 'x' icon.
+
+```js
+// remove task
+
+function removeTask(e) {
+  if (e.target.parentElement.classList.contains("delete-item")) {
+    console.log(e.target)
+  }
+}
+```
+
+But we want the whole li to be removed by clicking on the 'a' tag. So thats the parent of the parent when you click the 'i' tag.
+
+```js
+// remove task runs when we click on ul
+function removeTask(e) {
+  if (e.target.parentElement.classList.contains("delete-item")) {
+    e.target.parentElement.parentElement.remove()
+  }
+}
+```
+Then we add a confirmation
+
+```js
+// remove task runs when we click on ul
+function removeTask(e) {
+  if (e.target.parentElement.classList.contains("delete-item")) {
+    if (confirm("Are you sure?")) {
+      e.target.parentElement.parentElement.remove()
+    }
+  }
+}
+```
+
+
+

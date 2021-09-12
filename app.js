@@ -15,6 +15,8 @@ loadEventListeners()
 function loadEventListeners() {
   // Add task event
   form.addEventListener("submit", addTask)
+  // Remove task
+  taskList.addEventListener("click", removeTask)
 }
 
 // Add Task
@@ -43,4 +45,13 @@ function addTask(e) {
   taskInput.value = ""
   // prevent page refresh when clicking submit
   e.preventDefault()
+}
+
+// remove task runs when we click on ul
+function removeTask(e) {
+  if (e.target.parentElement.classList.contains("delete-item")) {
+    if (confirm("Are you sure?")) {
+      e.target.parentElement.parentElement.remove()
+    }
+  }
 }
