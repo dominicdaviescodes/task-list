@@ -94,5 +94,40 @@ function removeTask(e) {
 }
 ```
 
+### Deleting All tasks
 
+* Clicking Clear Tasks button removes all tasks in list
+
+First we need to add a listener to the btn.
+
+```js
+loadEventListeners()
+
+function loadEventListeners() {
+  // Add task event
+  form.addEventListener("submit", addTask)
+  // Remove task
+  taskList.addEventListener("click", removeTask)
+  // Remove all tasks
+  clearBtn.addEventListener("click", clearTasks)
+}
+```
+Then we create the function:
+easy version
+```js
+// clear tasks
+function clearTasks() {
+  taskList.innerHTML = ""
+}
+```
+and faster using removeChild() and while loop:
+
+```js
+function clearTasks() {
+  // while there is something in the list
+  while (taskList.firstChild){
+    taskList.removeChild(taskList.firstChild)
+  }
+}
+```
 
