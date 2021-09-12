@@ -134,6 +134,7 @@ function clearTasks() {
 ## Filter Tasks
 
 * 1st we add keyup listener 
+The keyup event is fired when a key is released.
 
 ```js
 function loadEventListeners() {
