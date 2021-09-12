@@ -34,3 +34,13 @@ function addTask(e) {
   e.preventDefault()
 }
 ```
+
+## Step Two
+
+* you should be able to delete a task by clicking on the 'x'
+* you should be able to filter through the list of tasks
+* you should be able to delete all tasks by clicking on the clear tasks button
+
+### Steps for deleting tasks
+
+* we'll use event delegation and add the listener to the ul that holds the list items
