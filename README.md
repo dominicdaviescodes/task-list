@@ -178,3 +178,146 @@ function filterTasks(e) {
   })
 }
 ```
+
+## Step 3: local storage
+
+local storage is part of js.
+We'll need another function to storeTaskInLocalStorage.
+We will call storeTaskInLocalStorage in the addTask function.
+
+```js
+// Add Task
+function addTask(e) {
+  if (taskInput.value === "") {
+    alert("add task")
+  }
+  const li = document.createElement("li")
+  li.className = "collection-item"
+  li.appendChild(document.createTextNode(taskInput.value))
+  const link = document.createElement("a")
+  link.className = "delete-item secondary-content"
+  link.innerHTML = '<i class="fa fa-remove"></i>'
+  li.appendChild(link)
+  taskList.appendChild(li)
+  // local storage
+  storeTaskInLocalStorage(taskInput.value)
+  taskInput.value = ""
+  e.preventDefault()
+}
+
+```
+
+#### Persist to local storage
+Not available in UI yet.
+```js
+// Store Task
+function storeTaskInLocalStorage(task) {
+  let tasks
+  // any tasks in LocalStorage?
+  if (localStorage.getItem("tasks") === null) {
+    tasks = []
+  } else {
+    // LocalStorage only stores str's so need to use JSON.parse
+    tasks = JSON.parse(localStorage.getItem("tasks"))
+  }
+  tasks.push(task)
+  // has to be stored as str
+  localStorage.setItem("tasks", JSON.stringify(tasks))
+}
+```
+
+To show persisted tasks in the ul tag we'll need another function and event to call it.
+
+We call addEventListener on the document, listening for DOMContentLoaded event which happens right after the document has loaded. Then we'll create the getTasks function.
+
+```js
+function loadEventListeners() {
+  // DOM load event
+  document.addEventListener("DOMContentLoaded", getTasks)
+  // Add task event
+  form.addEventListener("submit", addTask)
+  // Remove task
+  taskList.addEventListener("click", removeTask)
+  // Remove all tasks
+  clearBtn.addEventListener("click", clearTasks)
+  // filter tasks
+  filter.addEventListener("keyup", filterTasks)
+}
+```
+
+So we need to show the tasks again. We can use a lot of the logic from earlier when we created the li element.
+
+```js
+/ Get tasks from LS
+function getTasks() {
+  let tasks
+  // any tasks in LocalStorage? if none set to empty arr
+  if (localStorage.getItem("tasks") === null) {
+    tasks = []
+  } else {
+    // if there are items set tasks to what's already there
+    // LocalStorage only stores str's so need to use JSON.parse
+    tasks = JSON.parse(localStorage.getItem("tasks"))
+  }
+  // loop through existing tasks
+  tasks.forEach(function (task) {
+    // Create li element
+    const li = document.createElement("li")
+    // Add class to li (need collection-item class for materialize)
+    li.className = "collection-item"
+    // Create text node and append to li
+    li.appendChild(document.createTextNode(task))
+    // Create new link element. this will be the 'X' on each item in the list
+    const link = document.createElement("a")
+    // Add class to push 'x' to right of element. materialize uses secondary-content
+    link.className = "delete-item secondary-content"
+    // Add icon html
+    link.innerHTML = '<i class="fa fa-remove"></i>'
+    // Append the link to li
+    li.appendChild(link)
+    // Append li to ul
+    taskList.appendChild(li)
+  })
+}
+```
+#### removing tasks from LS
+
+We already have the ability to remove tasks but they are persisting in LS:
+
+```js
+// remove from LS
+function removeTaskFromLocalStorage(taskItem) {
+  let tasks
+  // any tasks in LocalStorage?
+  if (localStorage.getItem("tasks") === null) {
+    tasks = []
+  } else {
+    // LocalStorage only stores str's so need to use JSON.parse
+    tasks = JSON.parse(localStorage.getItem("tasks"))
+  }
+  tasks.forEach(function (task) {
+    if (taskItem.textContent === task) {
+      tasks.splice(index, 1)
+    }
+  })
+  localStorage.setItem('tasks', JSON.stringify(tasks))
+}
+```
+#### Modifying clearTasks():
+
+```js
+// clear tasks
+function clearTasks() {
+  // while there is something in the list
+  while (taskList.firstChild) {
+    taskList.removeChild(taskList.firstChild)
+  }
+  // clear tasks from LS
+  clearTasksFromLocalStorage()
+}
+
+// clear tasks from LS
+function clearTasksFromLocalStorage() {
+  localStorage.clear()
+}
+```
